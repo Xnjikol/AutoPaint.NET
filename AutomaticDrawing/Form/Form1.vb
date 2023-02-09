@@ -7,6 +7,7 @@ Imports AutoPaint.Recognition.Clustering.Recognition
 Imports System.Runtime.InteropServices
 
 Public Class Form1
+
     <DllImport("user32.dll")>
     Private Shared Function SetProcessDPIAware() As Boolean
     End Function
@@ -26,6 +27,7 @@ Public Class Form1
         Me.TopMost = True
         Machine = New Machine(Nothing, Nothing, True)
     End Sub
+
     ''' <summary>
     ''' 复制屏幕
     ''' </summary>
@@ -38,6 +40,7 @@ Public Class Form1
         TrackBar_MouseUp(TrackBar1, e)
         Panel4.Enabled = True
     End Sub
+
     ''' <summary>
     ''' 鼠标绘制
     ''' </summary>t
@@ -53,6 +56,7 @@ Public Class Form1
             Me.Show()
         End If
     End Sub
+
     ''' <summary>
     ''' 预览绘制
     ''' </summary>
@@ -74,11 +78,12 @@ Public Class Form1
             MsgBox("Please press Screenshot button.(请先复制屏幕)")
         End If
     End Sub
+
     ''' <summary>
     ''' 滑动按钮松开时
     ''' </summary>
     Private Sub TrackBar_MouseUp(sender As Object, e As MouseEventArgs) Handles TrackBar1.MouseUp
-        If Not Machine.Original Is Nothing Then
+        If Machine.Original IsNot Nothing Then
             Dim thresold As Single = sender.value
             If RadioButton1.Checked Then
                 Machine.Current = ColorHelper.GetThresholdPixelData(Machine.Original.GetPixelData, thresold).CreateBitmap
@@ -90,24 +95,28 @@ Public Class Form1
             MsgBox("Please press Screenshot button.(请先复制屏幕)")
         End If
     End Sub
+
     ''' <summary>
     ''' 选择按钮状态改变时
     ''' </summary>
     Private Sub CheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged, CheckBox2.CheckedChanged， CheckBox3.CheckedChanged
         ImageChanged()
     End Sub
+
     ''' <summary>
     ''' 单选按钮状态改变时
     ''' </summary>
     Private Sub RadioButton_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton1.CheckedChanged
         ImageChanged()
     End Sub
+
     ''' <summary>
     ''' 画布大小改变时
     ''' </summary>
     Private Sub PictureBox1_SizeChanged(sender As Object, e As EventArgs) Handles PictureBox1.SizeChanged
         ToolStripStatusLabel3.Text = "Size:" & PictureBox1.Width & "*" & PictureBox1.Height & "Pixel"
     End Sub
+
     ''' <summary>
     ''' 选项卡切换时
     ''' </summary>
@@ -118,6 +127,7 @@ Public Class Form1
             Panel1.Show()
         End If
     End Sub
+
     Private Sub TrackBar4_Scroll(sender As Object, e As EventArgs) Handles TrackBar4.Scroll
         PreviewSpeed = TrackBar4.Value
     End Sub
@@ -132,7 +142,7 @@ Public Class Form1
             Task.Run(Sub()
                          Me.Invoke(Sub()
                                        ToolStripStatusLabel2.Text = $"Position:[{e.NewVertex.X},{e.NewVertex.Y}]"
-                                       ToolStripStatusLabel4.Text = $"Preview:{(e.Percent * 100).ToString("F2")}%"
+                                       ToolStripStatusLabel4.Text = $"Preview:{(e.Percent * 100):F2}%"
                                        PictureBox2.Refresh()
                                    End Sub)
                      End Sub)
@@ -140,6 +150,7 @@ Public Class Form1
         End If
         Application.DoEvents()
     End Sub
+
     ''' <summary>
     ''' 对图像更改时调用该方法
     ''' </summary>
@@ -158,4 +169,5 @@ Public Class Form1
             PictureBox1.Image = Machine.Final
         End If
     End Sub
+
 End Class
